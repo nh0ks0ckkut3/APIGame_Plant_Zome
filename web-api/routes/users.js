@@ -31,14 +31,13 @@ router.post('/login', async (req, res, next) => {
   }
 })
 
-router.put('/changedPassword/:id', async (req, res, next) =>{
+router.put('/changedPassword', async (req, res, next) =>{
   try {
     const {body} = req;
-    const {id} = req.params;
-    const user = await UserController.changedPassword(id, body);
+    const user = await UserController.changedPassword(body);
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json(user);
   }
 })
 
