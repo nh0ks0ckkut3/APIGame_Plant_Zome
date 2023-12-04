@@ -113,7 +113,7 @@ router.post("/forgot-password", async (req, res, next) => {
       // const resetLink = `http://localhost:8686/users/forgot-password?token=${resetToken}`;
       // console.log('Reset link:', resetLink);
       const salt = bcrypt.genSaltSync(10);
-        const hashPassword = bcrypt.hashSync(randomIndex, salt);
+        const hashPassword = bcrypt.hashSync(randomIndex.toString(), salt);
 
         user.password = hashPassword 
       await user.save();
