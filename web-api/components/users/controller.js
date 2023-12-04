@@ -224,7 +224,7 @@ const forgotPassword = async (email) =>{
             Mailer.sendMail({
                 email: user.email,
                 subject:'Khôi phục mật khẩu',
-                content:`Link khôi phục mật khẩu: http://localhost:3000/reset-password/${token}`
+                content:`Link khôi phục mật khẩu: https://api-plantsvszombie-bason-694aafc26756.herokuapp.com/reset-password/${token}`
             })
         }, 0);
         return true;
