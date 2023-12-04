@@ -35,9 +35,9 @@ router.put('/changedPassword', async (req, res, next) =>{
   try {
     const {body} = req;
     const user = await UserController.changedPassword(body);
-    return res.status(200).json(user);
+    return res.status(200).json({message : result});
   } catch (error) {
-    return res.status(500).json(user);
+    return res.status(500).json({message : result});
   }
 })
 
