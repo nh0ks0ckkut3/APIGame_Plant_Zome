@@ -84,26 +84,26 @@ const updateProfile = async (id, data) =>{
 }
 
 // đổi mật khẩu
-const changedPassword = async (id, data) =>{
+const changedPassword = async (data) =>{
     // lấy dữ liệu từ database
     // trả về dữ liệu cho client
     try {
-        const {passwordOld, passwordNew} = data;
-        const user = await UserModel.findById(id);
-        if(!user) throw new Error('Không tìm thấy người dùng');
+        const {email, currentPass, newPass} = data;
+        const user = await UserModel.findOne({email});
+        if(!user) return 'Không tìm thấy người dùng';
         // kiểm tra password
-        const isValidPassword = await bcrypt.compare(passwordOld, user.password);
-        if(!isValidPassword) throw new Error('Nhập mật khẩu không đúng');
+        const isValidPassword = await bcrypt.compare(currentPass, user.password);
+        if(!isValidPassword) return 'Nhập mật khẩu không đúng';
         // mã hóa mật khẩu
         const salt = bcrypt.genSaltSync(10);
-        const hashPassword = bcrypt.hashSync(passwordNew, salt);
+        const hashPassword = bcrypt.hashSync(newPass, salt);
 
         user.password = hashPassword || user.password
         await user.save();
-        return true;
+        return "thành công";
     } catch (error) {
         console.log('error', error);
-        throw new Error('Xảy ra lỗi khi cập nhập mật khẩu');
+        return 'Xảy ra lỗi khi cập nhập mật khẩu';
     }
 }
 
