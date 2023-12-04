@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const UserController = require('../components/users/controller')
 const UserModel = require('../components/users/model')
+const bcrypt = require('bcryptjs');
 
 // đăng ký
 //http://localhost:3000/users
