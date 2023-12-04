@@ -12,7 +12,7 @@ const userSchema = new Schema({
     avatar:{type:String, required:false},
     age:{type:Number, required:true},
     gender:{type:String, required:true},
-    level:{type:Number, required:false},
+    level:{type:Number, required:true, default : 1},
 
 })
 
