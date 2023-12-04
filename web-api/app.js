@@ -9,7 +9,7 @@ const cors = require('cors');
 var mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb://localhost:27017/testGame', 
+mongoose.connect('mongodb+srv://0osuper:fOhL8p11Ng0x8xPx@plantsvszombie.tjmo9fh.mongodb.net/?retryWrites=true&w=majority', 
   { useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => console.log('Connected successfully'))
   .catch(err => console.log(err));
