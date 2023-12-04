@@ -28,7 +28,7 @@ const register = async (data) =>{
             Mailer.sendMail({
                 email: user.email,
                 subject: 'Xác thực tài khoản',
-                content: `<a href="http://localhost:3000/verify/${user._id}">Click vào đây</a>`
+                content: `<a href="https://api-plantsvszombie-bason-694aafc26756.herokuapp.com/verify/${user._id}">Click vào đây</a>`
             })
         }, 0)
     } catch (error) {
