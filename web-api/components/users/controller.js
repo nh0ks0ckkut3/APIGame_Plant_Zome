@@ -301,6 +301,68 @@ const verify = async (id) =>{
     }
 }
 
+//quên mật khẩu
+const forgotPasswordAPP = async (email) =>{
+    //lấy dữ liệu từ database
+    // trả về dữ liệu cho client
+    try {
+        // tim user theo email
+        const user = await UserModel.findOne({email})
+        if(!user) throw new Error('Không tìm thấy người dùng');
+        // tạo token
+        const token = Math.floor(Math.random() * 9000) + 1000;
+        // lưu token và email vào db
+        const passwordReset = new PasswordResetModel({email, token});
+        await passwordReset.save();
+        // gửi email khôi phục mật khẩu
+        setTimeout(() =>{
+            Mailer.sendMail({
+                email: user.email,
+                subject:'Khôi phục mật khẩu',
+                content: `Mã otp của bạn là: ${token}`
+            })
+        }, 0);
+        return true;
+    } catch (error) {
+        console.log("error : ", error);
+        return false;
+    }
+}
+
+// check token reset password
+const checkOTP = async (data) =>{
+    const {otp, passNew} = data;
+    try {
+            const passwordReset = await PasswordResetModel.findOne({token : otp});
+            if(passwordReset){
+
+            // mã hóa mật khẩu
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(passNew, salt);
+        // lưu vào db mật khẩu mới
+
+        const email = passwordReset.email;
+        console.log("ahihi", email)
+        const user = await UserModel.findOne({email});
+        user.password = hashPassword;
+        await user.save();
+
+        setTimeout(async () =>{
+            try {
+                const result = await PasswordResetModel.findByIdAndDelete(email);
+                return result;
+            } catch (error) {
+                console.log("error", error);
+            }
+        }, 1000);
+
+        return true;
+    }
+    } catch (error) {
+        console.log("error : ", error);
+        return false;
+    }
+};
 
 module.exports = {
     register,
@@ -317,5 +379,7 @@ module.exports = {
     checkTokenResetPassword,
     getUserById,
     forgotUsername,
-    verify
+    verify,
+    forgotPasswordAPP,
+    checkOTP
 }
