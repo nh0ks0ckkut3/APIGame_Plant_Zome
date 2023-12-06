@@ -69,9 +69,9 @@ router.put('/updateProfile/:id', async (req, res, next) =>{
     const {body} = req;
     const {id} = req.params;
     const user = await UserController.updateProfile(id,body);
-    return res.status(200).json(user);
+    return res.status(200).json({status: user});
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({status: user});
   }
 })
 
