@@ -27,7 +27,7 @@ const createDetailBill = async (data) =>{
         const {detail, cardVip_id, user_id} = data;
         // const {name, detail, price, image, cardVip_id, user_id} = data;
         const cardVip = await CardVipModel.findById(cardVip_id);
-        const DetailBill = new DetailBillCardVipModel({
+        const detailBill = new DetailBillCardVipModel({
             name: cardVip.name,
             detail:detail,
             price:cardVip.price,
@@ -35,10 +35,11 @@ const createDetailBill = async (data) =>{
             cardVip_id:cardVip_id,
             user_id: user_id
         });
-        await DetailBill.save();
+        await detailBill.save();
+        return true;
     } catch (error) {
         console.log('error', error);
-        throw new Error('Xảy ra lỗi khi thêm mới hóa đơn chi tiết');
+        return false;
     }
 }
 
