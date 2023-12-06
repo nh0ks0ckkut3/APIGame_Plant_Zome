@@ -36,7 +36,8 @@ const createDetailBill = async (data) =>{
             user_id: user_id
         });
         await detailBill.save();
-        return true;
+        const listDetailCard = await DetailBillCardVipModel.find({ user_id : user_id});
+        return listDetailCard;
     } catch (error) {
         console.log('error', error);
         return false;
