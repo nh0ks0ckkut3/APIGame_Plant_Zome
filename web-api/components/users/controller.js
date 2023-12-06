@@ -130,11 +130,9 @@ const getUserById = async (id) =>{
 const forgotUsername = async (email) =>{
     try {
         const user = await UserModel.findOne({email});
-        console.log("erroror", user)
         if(!user) throw new Error('Không tìm thấy tài khoản');
         if (user) {
             const username = user.username;
-      
             try {
               const transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -155,14 +153,15 @@ const forgotUsername = async (email) =>{
             } catch (error) {
               // Log the error for debugging purposes
               console.error('Error sending email:', error);
-              throw new Error("Xảy ra lỗi");
+              return false;
             }
           } else {
             console.log("error: ", error);
+            return false;
           }
     } catch (error) {
         console.log("error: ", error);
-        throw new Error("Xảy ra lỗi");
+        return false;
     }
 }
 
