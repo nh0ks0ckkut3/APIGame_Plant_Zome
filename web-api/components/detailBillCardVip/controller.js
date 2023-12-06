@@ -1,4 +1,5 @@
 const DetailBillCardVipModel =  require('./model');
+const CardVipModel = require('../cardVip/model');
 
 const getAllDetailBill = async () =>{
     try {
@@ -23,13 +24,16 @@ const getDetailBillID =  async (id) =>{
 
 const createDetailBill = async (data) =>{
     try {
-        const {name, detail, price, image, cardVip_id} = data;
+        const {detail, cardVip_id, user_id} = data;
+        // const {name, detail, price, image, cardVip_id, user_id} = data;
+        const cardVip = await CardVipModel.findById(cardVip_id);
         const DetailBill = new DetailBillCardVipModel({
-            name: name,
+            name: cardVip.name,
             detail:detail,
-            price:price,
-            image:image,
+            price:cardVip.price,
+            image:cardVip.image,
             cardVip_id:cardVip_id,
+            user_id: user_id
         });
         await DetailBill.save();
     } catch (error) {

@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-// http://localhost:8686/DetailBiilCardVips
+// http://localhost:8686/DetailBiilCardVips/:id
 router.get("/:id", async (req, res, next) =>{
     try {
         const {id} = req.params;

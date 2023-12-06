@@ -57,9 +57,9 @@ router.post('/forgotUsername', async (req, res, next) =>{
   try {
     const {email} = req.body;
     const user = await UserController.forgotUsername(email);
-    return res.status(200).json(user);
+    return res.status(200).json({status: user});
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({status: false});
   }
 })
 
@@ -199,20 +199,20 @@ router.post('/verify/:id', async (req, res, next) =>{
 router.post('/forgotPasswordAPP', async (req, res, next) =>{
   try {
     const {email} = req.body;
-     await UserController.forgotPasswordAPP(email);
-    return res.status(200).json({status: true})
+     const user = await UserController.forgotPasswordAPP(email);
+    return res.status(200).json({status: user})
   } catch (error) {
-    return res.status(500).json({status: false});
+    return res.status(500).json({status: user});
   }
 });
 
 router.post('/checkOTP_PassWord', async (req, res, next) =>{
   try {
     const {body} = req;
-    await UserController.checkOTP(body);
-    return res.status(200).json({status: true})
+    const user = await UserController.checkOTP(body);
+    return res.status(200).json({status: user})
   } catch (error) {
-    return res.status(500).json({status: false});
+    return res.status(500).json({status: user});
   }
 })
 

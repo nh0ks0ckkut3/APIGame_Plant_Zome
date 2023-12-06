@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const Mailer = require('../../components/helper/Mailer')
 const PasswordResetModel = require('../../components/users/modelPR')
 const nodemailer = require("nodemailer");
+const DetailBillCardVipModel = require('../../components/detailBillCardVip/model')
 
 // đăng ký tài khoản
 const register = async (data) =>{
@@ -43,7 +44,7 @@ const login = async (data) =>{
     // trả về dữ liệu cho client
     try {
         const {username, password} = data;
-        const user = await UserModel.findOne({username});
+        let user = await UserModel.findOne({username});
         if(!user) throw new Error('Không tìm thấy tài khoản');
 
         // kiểm tra password
@@ -51,7 +52,12 @@ const login = async (data) =>{
         if(!isValidPassword) throw new Error('Nhập mật khẩu không đúng');
         // xóa field password trong user
         user.password = undefined;
-
+        const detailCardVip = await DetailBillCardVipModel.find({user_id : user._id});
+        
+        user = {
+            ...user._doc,
+            listDetailCard: detailCardVip
+        };
         return user;
     } catch (error) {
         console.log('error', error);
@@ -130,11 +136,9 @@ const getUserById = async (id) =>{
 const forgotUsername = async (email) =>{
     try {
         const user = await UserModel.findOne({email});
-        console.log("erroror", user)
         if(!user) throw new Error('Không tìm thấy tài khoản');
         if (user) {
             const username = user.username;
-      
             try {
               const transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -155,14 +159,15 @@ const forgotUsername = async (email) =>{
             } catch (error) {
               // Log the error for debugging purposes
               console.error('Error sending email:', error);
-              throw new Error("Xảy ra lỗi");
+              return false;
             }
           } else {
             console.log("error: ", error);
+            return false;
           }
     } catch (error) {
         console.log("error: ", error);
-        throw new Error("Xảy ra lỗi");
+        return false;
     }
 }
 
@@ -308,6 +313,7 @@ const forgotPasswordAPP = async (email) =>{
     try {
         // tim user theo email
         const user = await UserModel.findOne({email})
+        console.log(user);
         if(!user) throw new Error('Không tìm thấy người dùng');
         // tạo token
         const token = Math.floor(Math.random() * 9000) + 1000;
