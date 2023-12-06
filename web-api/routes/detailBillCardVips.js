@@ -29,11 +29,11 @@ router.get("/:id", async (req, res, next) =>{
 router.post("/", async (req, res, next) =>{
     try {
         const {body} = req;
-        await DetailBillCardVip.createDetailBill(body);
-        return res.status(200).json({message:'Thêm mới thành công chi tiết card'});
+        const detailBill = await DetailBillCardVip.createDetailBill(body);
+        return res.status(200).json({status: detailBill});
     } catch (error) {
         console.log("error: ", error);
-        return res.status(500).json({message: error});
+        return res.status(500).json({status: detailBill});
     }
 })
 
