@@ -83,9 +83,10 @@ const updateProfile = async (id, data) =>{
        user.gender = gender || user.gender
        user.level = level || user.level
        await user.save();
+        return true;
     } catch (error) {
         console.log("error: ", error);
-        throw new Error('Xảy ra lỗi cập nhập thông tin');
+        return false;
     }
 }
 
