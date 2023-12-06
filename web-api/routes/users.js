@@ -59,11 +59,7 @@ router.post('/forgotUsername', async (req, res, next) =>{
     const user = await UserController.forgotUsername(email);
     return res.status(200).json({status: user});
   } catch (error) {
-<<<<<<< HEAD
-    return res.status(500).json({status: false});
-=======
     return res.status(500).json({status: user});
->>>>>>> 4aa3e7842681ddc2a2f4747a99c48daac149950f
   }
 })
 
